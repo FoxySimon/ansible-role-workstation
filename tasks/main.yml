@@ -1,0 +1,4 @@
+---
+# tasks file for the role
+- name: Ping localhost
+  ansible.builtin.ping:
