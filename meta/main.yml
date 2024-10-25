@@ -1,9 +1,22 @@
 ---
 # metadata file for the role
 galaxy_info:
-  author: Simon Hryszko
-  description: Role what someday will setup workstation
+  role_name: workstation
+  author: Foxy Simon
+  company: FoxyOps
+  description: Personal DevOps workstation setup automation - transforming boring machines into battle stations since 1997
   license: MIT
   min_ansible_version: "2.9"
+  
+  platforms:
+    - name: Archlinux
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
 
 dependencies: []
