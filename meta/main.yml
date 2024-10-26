@@ -1,7 +1,7 @@
 ---
 # metadata file for the role
 galaxy_info:
-  role_name: ansible-role-workstation
+  role_name: ansible_role_workstation
   author: Foxy Simon
   description: Personal DevOps workstation setup automation - transforming boring machines into battle stations since 1997
   license: MIT
