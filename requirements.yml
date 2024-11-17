@@ -1,4 +1,5 @@
 ---
 roles:
-  - src: https://github.com/viasite-ansible/ansible-role-zsh.git
+  - src: https://github.com/FoxySimon/ansible-role-zsh.git
     name: ansible-role-zsh
+    version: fix/fdfind-not-found
