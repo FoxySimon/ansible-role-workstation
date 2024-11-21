@@ -2,3 +2,10 @@
 # tasks file for the role
 - name: Ping
   ansible.builtin.ping:
+
+- name: Install git
+  package:
+    name: git
+    state: present
+  become: true
+  tags: git
