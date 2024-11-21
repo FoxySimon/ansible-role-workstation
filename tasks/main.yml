@@ -5,7 +5,14 @@
 
 - name: Install git
   package:
-    name: git
+    name: "{{ git_package_name }}"
     state: present
   become: true
   tags: git
+
+- name: Install pip
+  package:
+    name: "{{ pip_package_name }}"
+    state: present
+  become: true
+  tags: pip

@@ -1,0 +1,4 @@
+---
+# defaults file for the role
+git_package_name: git
+pip_package_name: python3-pip
