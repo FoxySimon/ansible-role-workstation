@@ -1,4 +1,0 @@
----
-roles:
-  - src: https://github.com/viasite-ansible/ansible-role-zsh.git
-    name: ansible-role-zsh
