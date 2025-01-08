@@ -1,0 +1,4 @@
+---
+- name: Import kubeseal tasks
+  ansible.builtin.import_tasks: kubeseal.yml
+  when: kubeseal | length > 0

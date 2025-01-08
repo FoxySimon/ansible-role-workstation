@@ -1,0 +1,49 @@
+---
+- name: Set architecture facts
+  ansible.builtin.set_fact:
+    arch: >-
+      {%- if ansible_architecture == "x86_64" -%}amd64
+      {%- elif ansible_architecture == "aarch64" -%}arm64
+      {%- elif ansible_architecture == "armv7l" -%}arm
+      {%- else -%}{{ ansible_architecture }}{%- endif -%}
+
+- name: Set OS facts
+  ansible.builtin.set_fact:
+    os: >-
+      {%- if ansible_system == "Linux" -%}linux
+      {%- elif ansible_system == "Darwin" -%}darwin
+      {%- elif ansible_system == "Windows" -%}windows
+      {%- else -%}{{ ansible_system | lower }}{%- endif -%}
+
+- name: Download kubeseal
+  ansible.builtin.get_url:
+    url: "https://github.com/bitnami-labs/sealed-secrets/releases/download/v{{ kubeseal }}/kubeseal-{{ kubeseal }}-{{ os }}-{{ arch }}.tar.gz"
+    dest: "/tmp/kubeseal-{{ kubeseal }}.tar.gz"
+    mode: '0644'
+
+- name: Create temp directory for extraction
+  ansible.builtin.file:
+    path: "/tmp/kubeseal-{{ kubeseal }}"
+    state: directory
+    mode: '0755'
+
+- name: Extract kubeseal
+  ansible.builtin.unarchive:
+    src: "/tmp/kubeseal-{{ kubeseal }}.tar.gz"
+    dest: "/tmp/kubeseal-{{ kubeseal }}"
+    remote_src: yes
+
+- name: Install kubeseal binary
+  ansible.builtin.copy:
+    src: "/tmp/kubeseal-{{ kubeseal }}/kubeseal"
+    dest: "/usr/local/bin/kubeseal"
+    mode: '0755'
+    remote_src: yes
+
+- name: Clean up temporary files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "/tmp/kubeseal-{{ kubeseal }}.tar.gz"
+    - "/tmp/kubeseal-{{ kubeseal }}"
