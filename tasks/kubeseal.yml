@@ -17,25 +17,25 @@
 
 - name: Download kubeseal
   ansible.builtin.get_url:
-    url: "https://github.com/bitnami-labs/sealed-secrets/releases/download/v{{ kubeseal }}/kubeseal-{{ kubeseal }}-{{ os }}-{{ arch }}.tar.gz"
-    dest: "/tmp/kubeseal-{{ kubeseal }}.tar.gz"
+    url: "https://github.com/bitnami-labs/sealed-secrets/releases/download/v{{ kubeseal_ver }}/kubeseal-{{ kubeseal_ver }}-{{ os }}-{{ arch }}.tar.gz"
+    dest: "/tmp/kubeseal-{{ kubeseal_ver }}.tar.gz"
     mode: '0644'
 
 - name: Create temp directory for extraction
   ansible.builtin.file:
-    path: "/tmp/kubeseal-{{ kubeseal }}"
+    path: "/tmp/kubeseal-{{ kubeseal_ver }}"
     state: directory
     mode: '0755'
 
 - name: Extract kubeseal
   ansible.builtin.unarchive:
-    src: "/tmp/kubeseal-{{ kubeseal }}.tar.gz"
-    dest: "/tmp/kubeseal-{{ kubeseal }}"
+    src: "/tmp/kubeseal-{{ kubeseal_ver }}.tar.gz"
+    dest: "/tmp/kubeseal-{{ kubeseal_ver }}"
     remote_src: yes
 
 - name: Install kubeseal binary
   ansible.builtin.copy:
-    src: "/tmp/kubeseal-{{ kubeseal }}/kubeseal"
+    src: "/tmp/kubeseal-{{ kubeseal_ver }}/kubeseal"
     dest: "/usr/local/bin/kubeseal"
     mode: '0755'
     remote_src: yes
@@ -45,5 +45,5 @@
     path: "{{ item }}"
     state: absent
   loop:
-    - "/tmp/kubeseal-{{ kubeseal }}.tar.gz"
-    - "/tmp/kubeseal-{{ kubeseal }}"
+    - "/tmp/kubeseal-{{ kubeseal_ver }}.tar.gz"
+    - "/tmp/kubeseal-{{ kubeseal_ver }}"
