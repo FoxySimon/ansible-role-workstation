@@ -15,11 +15,24 @@
       {%- elif ansible_system == "Windows" -%}windows
       {%- else -%}{{ ansible_system | lower }}{%- endif -%}
 
+- name: Download checksums file
+  ansible.builtin.get_url:
+    url: "https://github.com/bitnami-labs/sealed-secrets/releases/download/v{{ kubeseal_ver }}/sealed-secrets_{{ kubeseal_ver }}_checksums.txt"
+    dest: "/tmp/kubeseal-{{ kubeseal_ver }}-checksums.txt"
+    mode: '0644'
+
+- name: Get checksum for our platform
+  ansible.builtin.shell: |
+    grep "kubeseal-{{ kubeseal_ver }}-{{ os }}-{{ arch }}.tar.gz" /tmp/kubeseal-{{ kubeseal_ver }}-checksums.txt | awk '{print $1}'
+  register: checksum
+  changed_when: false
+
 - name: Download kubeseal
   ansible.builtin.get_url:
     url: "https://github.com/bitnami-labs/sealed-secrets/releases/download/v{{ kubeseal_ver }}/kubeseal-{{ kubeseal_ver }}-{{ os }}-{{ arch }}.tar.gz"
     dest: "/tmp/kubeseal-{{ kubeseal_ver }}.tar.gz"
     mode: '0644'
+    checksum: "sha256:{{ checksum.stdout }}"
 
 - name: Create temp directory for extraction
   ansible.builtin.file:
@@ -47,3 +60,4 @@
   loop:
     - "/tmp/kubeseal-{{ kubeseal_ver }}.tar.gz"
     - "/tmp/kubeseal-{{ kubeseal_ver }}"
+    - "/tmp/kubeseal-{{ kubeseal_ver }}-checksums.txt"
