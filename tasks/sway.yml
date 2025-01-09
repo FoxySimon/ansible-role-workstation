@@ -1,0 +1,19 @@
+---
+- name: Ensure Sway configuration directory exists
+  ansible.builtin.file:
+    path: "/home/{{ workstation_user }}/.config/sway"
+    state: directory
+    mode: '0755'
+    recurse: yes  # This will create parent directories if needed
+
+- name: Check if system Sway config exists
+  ansible.builtin.stat:
+    path: /etc/sway/config
+  register: system_sway_config
+
+- name: Copy Sway configuration file
+  ansible.builtin.copy:
+    src: /etc/sway/config
+    dest: "/home/{{ workstation_user }}/.config/sway/config"
+    mode: '0644'
+  when: system_sway_config.stat.exists

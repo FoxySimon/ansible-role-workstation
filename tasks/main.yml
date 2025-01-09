@@ -6,3 +6,7 @@
 - name: Import DBeaver installation tasks
   import_tasks: dbeaver.yml
   when: dbeaver_ver | length > 0
+
+- name: Import Sway configuration tasks
+  import_tasks: sway.yml
+  when: WM | lower == "sway"
