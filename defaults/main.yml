@@ -2,3 +2,4 @@
 K8S_TOOLS: False
 
 kubeseal_ver: 0.27.3
+dbeaver_ver: 24.3.2

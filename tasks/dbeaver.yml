@@ -1,0 +1,39 @@
+---
+- name: Set architecture facts for DBeaver
+  ansible.builtin.set_fact:
+    arch: >-
+      {%- if ansible_architecture == "x86_64" -%}x86_64
+      {%- elif ansible_architecture == "aarch64" -%}aarch64
+      {%- else -%}{{ ansible_architecture }}{%- endif -%}
+
+- name: Download DBeaver
+  ansible.builtin.get_url:
+    url: "https://dbeaver.io/files/{{ dbeaver_ver }}/dbeaver-ce-{{ dbeaver_ver }}-linux.gtk.{{ arch }}.tar.gz"
+    dest: "/tmp/dbeaver-{{ dbeaver_ver }}.tar.gz"
+    checksum: "sha256:https://dbeaver.io/files/{{ dbeaver_ver }}/checksum/dbeaver-ce-{{ dbeaver_ver }}-linux.gtk.{{ arch }}.tar.gz.sha256"
+    mode: '0644'
+
+- name: Create installation directory for DBeaver
+  ansible.builtin.file:
+    path: "/opt/dbeaver-ce-{{ dbeaver_ver }}"
+    state: directory
+    mode: '0755'
+
+- name: Extract DBeaver to installation directory (strip first directory level)
+  ansible.builtin.unarchive:
+    src: "/tmp/dbeaver-{{ dbeaver_ver }}.tar.gz"
+    dest: "/opt/dbeaver-ce-{{ dbeaver_ver }}"
+    remote_src: yes
+    extra_opts: "--strip-components=1"
+
+- name: Create symlink to DBeaver executable
+  ansible.builtin.file:
+    src: "/opt/dbeaver-ce-{{ dbeaver_ver }}/dbeaver"
+    dest: "/usr/local/bin/dbeaver"
+    state: link
+    force: yes
+
+- name: Clean up temporary DBeaver archive
+  ansible.builtin.file:
+    path: "/tmp/dbeaver-{{ dbeaver_ver }}.tar.gz"
+    state: absent
