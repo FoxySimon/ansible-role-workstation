@@ -1,0 +1,6 @@
+---
+- name: Reload Sway configuration
+  ansible.builtin.command: >-
+    swaymsg --socket {{ 
+      (lookup('pipe', 'find /run/user -name "sway-ipc.*.sock" 2>/dev/null | head -n 1')
+    ) }} reload
