@@ -16,5 +16,7 @@
     src: /etc/sway/config
     dest: "/home/{{ workstation_user }}/.config/sway/config"
     mode: '0644'
+    owner: "{{ workstation_user }}"
+    group: "{{ workstation_user }}"
   notify: Reload Sway configuration
   when: not system_sway_config.stat.exists
