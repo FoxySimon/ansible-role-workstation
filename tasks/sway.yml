@@ -8,7 +8,7 @@
 
 - name: Check if system Sway config exists
   ansible.builtin.stat:
-    path: /etc/sway/config
+    path: "/home/{{ workstation_user }}/.config/sway/config"
   register: system_sway_config
 
 - name: Copy Sway configuration file
