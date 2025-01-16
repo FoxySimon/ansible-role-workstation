@@ -10,3 +10,8 @@
 - name: Import Sway configuration tasks
   import_tasks: sway.yml
   when: WM | lower == "sway"
+
+- name: Import CopyQ installation tasks
+  import_tasks: copyq.yml
+  when: copyq_ver | length > 0
+  tags: copyq
