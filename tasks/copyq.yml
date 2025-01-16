@@ -11,9 +11,18 @@
   notify: Reload Sway configuration
   when: WM == "sway"
 
+- name: Comment out lines with $mod+v that do not contain 'copyq'
+  ansible.builtin.lineinfile:
+    path: "/home/{{ workstation_user }}/.config/sway/config"
+    regexp: '^(?!\s*#).*\$mod\+v(?!.*copyq).*$'
+    line: '# \g<0>'
+    backrefs: yes
+
 - name: Add CopyQ keybinding to Sway config
   ansible.builtin.lineinfile:
     path: "/home/{{ workstation_user }}/.config/sway/config"
-    line: 'bindsym $mod+v exec copyq'
+    line: 'bindsym $mod+v exec copyq toggle'
+    regex: '^(?!\s*#).*bindsym.*\$mod\+v.*copyq$'
   notify: Reload Sway configuration
   when: WM == "sway"
+
