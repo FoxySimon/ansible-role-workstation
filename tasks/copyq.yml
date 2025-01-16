@@ -3,3 +3,17 @@
   ansible.builtin.package:
     name: copyq
     state: "{{ copyq_ver }}"
+
+- name: Add CopyQ autostart to Sway config
+  ansible.builtin.lineinfile:
+    path: "/home/{{ workstation_user }}/.config/sway/config"
+    line: 'exec pgrep -x copyq || copyq'
+  notify: Reload Sway configuration
+  when: WM == "sway"
+
+- name: Add CopyQ keybinding to Sway config
+  ansible.builtin.lineinfile:
+    path: "/home/{{ workstation_user }}/.config/sway/config"
+    line: 'bindsym $mod+v exec copyq'
+  notify: Reload Sway configuration
+  when: WM == "sway"
