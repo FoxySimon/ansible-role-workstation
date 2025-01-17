@@ -7,3 +7,5 @@ dbeaver_ver: 24.3.2
 
 copyq_ver: present
 screenshot_tool: "grim_slurp_swappy"
+screenshot_bindsym: "Mod1+$mod+Shift+s"
+

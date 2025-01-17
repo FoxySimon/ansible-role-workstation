@@ -11,3 +11,14 @@
     state: present
   loop: "{{ screenshot_tool.split('_') }}"
 
+- name: Escape special characters for regex
+  set_fact:
+    screenshot_bindsym_escaped: "{{ screenshot_bindsym | escape_regex }}"
+
+- name: Comment out lines with $mod+v that do not contain 'copyq'
+  ansible.builtin.lineinfile:
+    path: "/home/{{ workstation_user }}/.config/sway/config"
+    regexp: '^(?!\s*#).*{{ screenshot_bindsym_escaped }}(?!.*copyq).*$'
+    line: '# \g<0>'
+    backrefs: yes
+
