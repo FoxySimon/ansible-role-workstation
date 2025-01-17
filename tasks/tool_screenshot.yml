@@ -1,1 +1,13 @@
 ---
+- name: Update package cache
+  ansible.builtin.package:
+    name: "*"
+    state: latest
+    update_cache: yes
+
+- name: Install screenshot tools
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ screenshot_tool.split('_') }}"
+
