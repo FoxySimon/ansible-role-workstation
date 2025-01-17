@@ -15,3 +15,7 @@
   import_tasks: copyq.yml
   when: copyq_ver | length > 0
   tags: copyq
+
+- name: Import screenshot tool
+  import_tasks: tool_screenshot.yml
+  when: screenshot_tool | length > 0
