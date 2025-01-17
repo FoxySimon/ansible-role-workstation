@@ -17,6 +17,7 @@
     regexp: '^(?!\s*#).*\$mod\+v(?!.*copyq).*$'
     line: '# \g<0>'
     backrefs: yes
+  when: WM == "sway"
 
 - name: Add CopyQ keybinding to Sway config
   ansible.builtin.lineinfile:
