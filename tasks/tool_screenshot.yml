@@ -11,14 +11,20 @@
     state: present
   loop: "{{ screenshot_tool.split('_') }}"
 
-- name: Escape special characters for regex
-  set_fact:
-    screenshot_bindsym_escaped: "{{ screenshot_bindsym | escape_regex }}"
-
-- name: Comment out lines with $mod+v that do not contain 'copyq'
+- name: Comment out lines with bindsym that do not contain command
   ansible.builtin.lineinfile:
     path: "/home/{{ workstation_user }}/.config/sway/config"
-    regexp: '^(?!\s*#).*{{ screenshot_bindsym_escaped }}(?!.*copyq).*$'
+    regexp: "^(?!\\s*#).*{{ screenshot_bindsym | escape_regex }}(?!.*{{ screenshot_tool }}).*$"
     line: '# \g<0>'
+  #regexp: '^(?!\s*#).*\$mod\+v(?!.*copyq).*$'
     backrefs: yes
+  when: WM == "sway"
+
+- name: Set screenshot keybinding
+  ansible.builtin.lineinfile:
+    path: "/home/{{ workstation_user }}/.config/sway/config"
+    line: 'bindsym {{ screenshot_bindsym }} exec {{ screenshot_command }} #{{ screenshot_tool }}'
+    regex: '^(?!\s*#).*bindsym.*#{{ screenshot_tool }}$'
+  notify: Reload Sway configuration
+  when: WM == "sway"
 
