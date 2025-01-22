@@ -6,6 +6,7 @@
     update_cache: yes
 
 - name: Install screenshot tools
+  become: true
   ansible.builtin.package:
     name: "{{ item }}"
     state: present

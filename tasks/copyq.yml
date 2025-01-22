@@ -1,5 +1,6 @@
 ---
 - name: Install CopyQ
+  become: true
   ansible.builtin.package:
     name: copyq
     state: "{{ copyq_ver }}"
