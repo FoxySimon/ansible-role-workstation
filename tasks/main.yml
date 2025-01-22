@@ -1,3 +1,11 @@
+- name: Update package cache
+  become: true
+  changed_when: false
+  ansible.builtin.package:
+    name: "*"
+    state: latest
+    update_cache: yes
+
 - name: Import Kubernetes naming tasks
   import_tasks: k8s_tools.yml
   when: K8S_TOOLS | bool
