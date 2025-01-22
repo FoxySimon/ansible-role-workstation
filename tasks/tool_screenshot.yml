@@ -11,7 +11,6 @@
     path: "/home/{{ workstation_user }}/.config/sway/config"
     regexp: "^(?!\\s*#).*{{ screenshot_bindsym | escape_regex }}(?!.*{{ screenshot_tool }}).*$"
     line: '# \g<0>'
-  #regexp: '^(?!\s*#).*\$mod\+v(?!.*copyq).*$'
     backrefs: yes
   when: WM == "sway"
 
