@@ -4,6 +4,20 @@
   ansible.builtin.package:
     name: copyq
     state: "{{ copyq_ver }}"
+  rescue:
+    - name: Update package cache
+      become: true
+      changed_when: false
+      ansible.builtin.package:
+        name: "*"
+        state: latest
+        update_cache: yes
+
+    - name: Retry CopyQ installation
+      become: true
+      ansible.builtin.package:
+        name: copyq
+        state: "{{ copyq_ver }}"
 
 - name: Add CopyQ autostart to Sway config
   ansible.builtin.lineinfile:
