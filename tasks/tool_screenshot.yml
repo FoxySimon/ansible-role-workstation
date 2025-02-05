@@ -1,24 +1,25 @@
 ---
-- name: Install screenshot tools
+- block:
+    - name: Install screenshot tools
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ screenshot_tool.split('_') }}"
   become: true
-  ansible.builtin.package:
-    name: "{{ item }}"
-    state: present
   rescue:
     - name: Update package cache
-      become: true
-      changed_when: false
       ansible.builtin.package:
         name: "*"
         state: latest
         update_cache: yes
-    - name: Install screenshot tools
       become: true
+      changed_when: false
+
+    - name: Install screenshot tools
       ansible.builtin.package:
         name: "{{ item }}"
         state: present
-
-  loop: "{{ screenshot_tool.split('_') }}"
+      become: true
 
 - name: Comment out lines with bindsym that do not contain command
   ansible.builtin.lineinfile:
